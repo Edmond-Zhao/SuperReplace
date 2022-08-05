@@ -180,3 +180,13 @@ failed:
     return -1;
 }
 
+char *load_file( const char *s_name )
+{
+    FILE *fp = NULL;
+    unsigned long ul_size = 0;
+
+    if( s_name == NULL )
+        return -1;
+    
+    return NULL;
+}
