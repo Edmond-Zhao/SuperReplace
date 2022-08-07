@@ -31,5 +31,6 @@ int mmg_add_a_line( block_db_t *p_block_db, char *s_line );
 char *mmg_get_first_line( block_db_t *p_block_db );
 char *mmg_get_next_line( block_db_t *p_block_db );
 int mmg_destroy( block_db_t *p_block_db );
+int mmg_block_db_dump( block_db_t *p_block_db );
 
 #endif /* _MMANAGE_H_ */

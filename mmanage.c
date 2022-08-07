@@ -11,7 +11,7 @@ block_db_t *mmg_get_block_db( const size_t ul_mem_size )
     char *p_block = NULL;
 
     if( ul_mem_size == 0 || ul_mem_size > MAX_BLOCK_SIZE )
-        return -1;
+        return NULL;
 
     p_block_db = ( block_db_t * )malloc( sizeof( block_db_t ) );
     if( p_block_db == NULL )
@@ -67,7 +67,7 @@ int mmg_add_a_line( block_db_t *p_block_db, char *s_line )
     p_node->p_line = p_block_db->p_w_end;
     p_block_db->p_w_end = p_block_db->p_w_end + i_line_len + 1;
     p_block_db->i_line_node_count++;
-    if( p_block_db->p_node_head = NULL )
+    if( p_block_db->p_node_head == NULL )
     {
         p_node->i_index = 1;
         p_block_db->p_node_head = p_node;
@@ -89,7 +89,7 @@ char *mmg_get_first_line( block_db_t *p_block_db )
     
     p_block_db->p_node_curr = p_block_db->p_node_head;
 
-    return p_block_db->p_node_curr;
+    return p_block_db->p_node_curr->p_line;
 }
 
 char *mmg_get_next_line( block_db_t *p_block_db )
@@ -100,7 +100,7 @@ char *mmg_get_next_line( block_db_t *p_block_db )
     if( p_block_db->p_node_curr != NULL )
         p_block_db->p_node_curr = p_block_db->p_node_curr->p_next;
     
-    return p_block_db->p_node_curr;
+    return p_block_db->p_node_curr->p_line;
 }
 
 int mmg_destroy( block_db_t *p_block_db )
@@ -122,6 +122,26 @@ int mmg_destroy( block_db_t *p_block_db )
         }
 
         free( p_block_db );
+    }
+
+    return 0;
+}
+
+int mmg_block_db_dump( block_db_t *p_block_db )
+{
+    line_node_t *p_node = NULL;
+
+    if( p_block_db )
+    {
+        printf( "Node count:  %d\n", p_block_db->i_line_node_count );
+        printf( "Block size:  %zu bytes\n", p_block_db->block_size );
+        printf( "Block content: \n" );
+        p_node = p_block_db->p_node_head;
+        while( p_node )
+        {
+            printf( "    %s\n", p_node->p_line );
+            p_node = p_node->p_next;
+        }
     }
 
     return 0;

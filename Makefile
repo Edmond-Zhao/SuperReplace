@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -g 
-OBJ = main.o sr.o mmanage.o
+OBJ = main.o mmanage.o sr.o
 sr:$(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
 %.c:%.o

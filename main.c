@@ -7,41 +7,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "test.h"
 #include "sr.h"
+
+/* defined for test */
+#define TEST_FILE_LIST_FILE      "test/file_list.txt"
+#define TEST_FIND_LINES_FILE     "test/find_lines.txt"
+#define TEST_REPLACE_LINES_FILE  "test/replace_lines.txt"
 
 int main( void )
 {
     replace_ent_t rent = { 0 };
-    char **pp_line = NULL;
-    int i_pgh_count = 0;
-    int i = 0;
 
     init_replace_ent( &rent, 1 );
-    printf( "file count: %d\n", gi_file_path_count );
+    load_param_from_file( &rent, TEST_FILE_LIST_FILE, LOAD_FILE_LIST );
+    printf( "load block from file: %s\n", TEST_FILE_LIST_FILE );
+    dump_replace_ent( &rent );
 
-    pp_line = s_target_pgh;
-    while( *pp_line != NULL )
-    {
-        ++i_pgh_count;
-        pp_line++;
-    }
-    printf( "target line count: %d\n", i_pgh_count );
+    //rent.p_block_find = load_block_from_file( TEST_FIND_LINES_FILE );
 
-    rent.i_target_lines_count = i_pgh_count;
-    rent.pp_target_lines = s_target_pgh;
+    //rent.p_block_replace = load_block_from_file( TEST_REPLACE_LINES_FILE );
 
-    i_pgh_count = 0;
-    pp_line = s_replace_with;
-    while( *pp_line != NULL )
-    {
-        ++i_pgh_count;
-        pp_line++;
-    }
-    printf( "replace line count: %d\n", i_pgh_count );
-    rent.i_replace_lines_count = i_pgh_count;
-    rent.pp_replace_lines = s_replace_with;
-    
+ 
+/*    
     for( i = 0; i < gi_file_path_count; ++i )
     {
         printf( "Finding in file:  %s\r", s_file_path_list[ i ] );
@@ -54,7 +41,8 @@ int main( void )
         }
         init_replace_ent( &rent, 0 );
     }
-    printf( "%*s\r", 150, "" );
+    printf( "%*s\r", 150, "" );*/
+    uninit_replace_ent( &rent );
     printf( "Done!\n" );
 
     return 0;

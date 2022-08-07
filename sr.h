@@ -24,7 +24,8 @@ typedef struct replace_ent_s
     int i_matched_flag;
     int i_in_file_match_begain;
     int i_in_file_match_end;
-    int i_target_lines_count;
+    int i_file_path_count;
+    int i_find_lines_count;
     int i_replace_lines_count;
 
     block_db_t *p_block_file_list;
@@ -33,10 +34,12 @@ typedef struct replace_ent_s
     char s_match_file_path[ MAX_FILE_PATH ];
 } replace_ent_t;
 
-int init_replace_ent( replace_ent_t *p_ent, const int i_frist_flag );
+int init_replace_ent( replace_ent_t *p_rent, const int i_frist_flag );
+int uninit_replace_ent( replace_ent_t *p_rent );
+int dump_replace_ent( replace_ent_t *p_rent );
 int find_in_file( char *s_file_path, replace_ent_t *p_rent );
 int replace_in_file( replace_ent_t *p_rent );
-block_db_t *load_block_from_file( const char *s_name );
+int load_param_from_file( replace_ent_t *p_rent, const char *s_name, const load_type_e load_type );
 
 #endif /* _SR_H_ */
 

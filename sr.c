@@ -4,22 +4,86 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sr.h"
-#include "mmanage.h"
 
-int init_replace_ent( replace_ent_t *p_ent, const int i_frist_flag )
+int init_replace_ent( replace_ent_t *p_rent, const int i_frist_flag )
 {
     if( i_frist_flag )
     {
-        memset( p_ent, 0, sizeof( replace_ent_t ) );
+        memset( p_rent, 0, sizeof( replace_ent_t ) );
         return 0;
     }
 
-    p_ent->i_match_index = 0;
-    p_ent->i_matched_flag = 0;
-    p_ent->i_in_file_match_begain = 0;
-    p_ent->i_in_file_match_end = 0;
-    memset( p_ent->s_match_file_path, 0, MAX_FILE_PATH );
+    p_rent->i_match_index = 0;
+    p_rent->i_matched_flag = 0;
+    p_rent->i_in_file_match_begain = 0;
+    p_rent->i_in_file_match_end = 0;
+    memset( p_rent->s_match_file_path, 0, MAX_FILE_PATH );
     
+    return 0;
+}
+
+int uninit_replace_ent( replace_ent_t *p_rent )
+{
+    if( p_rent )
+    {
+        if( p_rent->p_block_file_list )
+            mmg_destroy( p_rent->p_block_file_list );
+        if( p_rent->p_block_find )
+            mmg_destroy( p_rent->p_block_find );
+        if( p_rent->p_block_replace )
+            mmg_destroy( p_rent->p_block_replace );
+    }
+
+    return 0;
+}
+
+int dump_replace_ent( replace_ent_t *p_rent )
+{
+    if( p_rent )
+    {
+        printf( "\n------------ DUMP RELACE ENTRY ----------\n" );
+        printf( "i_match_index:           %d\n", p_rent->i_match_index );
+        printf( "i_matched_flag:          %d\n", p_rent->i_matched_flag );
+        printf( "i_in_file_match_begain:  %d\n", p_rent->i_in_file_match_begain );
+        printf( "i_in_file_match_end:     %d\n", p_rent->i_in_file_match_end );
+        printf( "i_file_path_count:       %d\n", p_rent->i_file_path_count );
+        printf( "i_find_lines_count:      %d\n", p_rent->i_find_lines_count );
+        printf( "i_replace_lines_count:   %d\n", p_rent->i_replace_lines_count );
+        if( p_rent->p_block_file_list )
+        {
+            printf( "\n**DUMP p_block_file_list:\n" );
+            mmg_block_db_dump( p_rent->p_block_file_list );
+        }
+        else
+        {
+            printf( "\n**DUMP p_block_file_list: (empty)\n" );
+        }
+        if( p_rent->p_block_find )
+        {
+            printf( "\n**DUMP p_block_find:\n" );
+            mmg_block_db_dump( p_rent->p_block_find );
+        }
+        else
+        {
+            printf( "\n**DUMP p_block_find:   (empty)\n" );
+        }
+        if( p_rent->p_block_replace )
+        {
+            printf( "\n**DUMP p_block_replace:\n" );
+            mmg_block_db_dump( p_rent->p_block_replace );
+        }
+        else
+        {
+            printf( "\n**DUMP p_block_replace: (empty)\n" );
+        }
+
+        if( strlen( p_rent->s_match_file_path ) > 0)
+            printf( "\ns_match_file_path:       %s\n", p_rent->s_match_file_path );
+        else
+            printf( "\ns_match_file_path:       (empty)\n" );
+        printf( "------------ DUMP RELACE ENTRY ----------\n" );
+    }
+
     return 0;
 }
 
@@ -193,17 +257,17 @@ static block_db_t *load_block_from_file( const char *s_name )
     int i_line_len = 0;
 
     if( s_name == NULL )
-        return -1;
+        return NULL;
     
     fp = fopen( s_name, "r" );
     if( fp == NULL )
     {
         printf( "open file '%s' for load failed!\n", s_name );
-        return -1;
+        return NULL;
     }
     fseek( fp, 0, SEEK_END );
     st_size = ftell( fp );
-    printf( "The size of file '%s' is %u\n", s_name, st_size );
+    printf( "The size of file '%s' is %zu\n", s_name, st_size );
     if( st_size == 0 )
         goto failed;
     
@@ -218,6 +282,7 @@ static block_db_t *load_block_from_file( const char *s_name )
         i_line_len = strlen( s_line );
         if( s_line[ i_line_len - 1 ] == '\n' )
             s_line[ i_line_len - 1 ] = '\0';
+        i_line_len = strlen( s_line );
         if( i_line_len > 0 )
             mmg_add_a_line( p_block_db, s_line );
     }
