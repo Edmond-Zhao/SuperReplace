@@ -30,5 +30,6 @@ block_db_t *mmg_get_block_db( const size_t ul_mem_size );
 int mmg_add_a_line( block_db_t *p_block_db, char *s_line );
 char *mmg_get_first_line( block_db_t *p_block_db );
 char *mmg_get_next_line( block_db_t *p_block_db );
+int mmg_destroy( block_db_t *p_block_db );
 
 #endif /* _MMANAGE_H_ */

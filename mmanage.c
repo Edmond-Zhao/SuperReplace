@@ -82,14 +82,14 @@ int mmg_add_a_line( block_db_t *p_block_db, char *s_line )
     return 0;
 }
 
-int mmg_reset_line( block_db_t *p_block_db )
+char *mmg_get_first_line( block_db_t *p_block_db )
 {
-    if( p_block_db )
-    {
-        p_block_db->p_node_curr = NULL;
-    }
+    if( p_block_db == NULL )
+        return NULL;
+    
+    p_block_db->p_node_curr = p_block_db->p_node_head;
 
-    return 0;
+    return p_block_db->p_node_curr;
 }
 
 char *mmg_get_next_line( block_db_t *p_block_db )
@@ -97,10 +97,32 @@ char *mmg_get_next_line( block_db_t *p_block_db )
     if( p_block_db == NULL )
         return NULL;
 
-    if( p_block_db->p_node_curr == NULL )
-        p_block_db->p_node_curr = p_block_db->p_node_head;
-    else
+    if( p_block_db->p_node_curr != NULL )
         p_block_db->p_node_curr = p_block_db->p_node_curr->p_next;
     
     return p_block_db->p_node_curr;
+}
+
+int mmg_destroy( block_db_t *p_block_db )
+{
+    line_node_t *p_node = NULL;
+    line_node_t *p_temp = NULL;
+
+    if( p_block_db )
+    {
+        if( p_block_db->p_block )
+            free( p_block_db->p_block );
+        
+        p_node = p_block_db->p_node_head;
+        while( p_node )
+        {
+            p_temp = p_node;
+            p_node = p_node->p_next;
+            free( p_temp );
+        }
+
+        free( p_block_db );
+    }
+
+    return 0;
 }
