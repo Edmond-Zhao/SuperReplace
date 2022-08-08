@@ -271,7 +271,8 @@ static block_db_t *load_block_from_file( const char *s_name )
     if( st_size == 0 )
         goto failed;
     
-    p_block_db = mmg_get_block_db( st_size );
+    p_block_db->file_size = st_size;
+    p_block_db = mmg_get_block_db();
     if( p_block_db == NULL )
         goto failed;
 
