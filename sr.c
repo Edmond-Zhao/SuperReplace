@@ -41,7 +41,7 @@ int dump_replace_ent( replace_ent_t *p_rent )
 {
     if( p_rent )
     {
-        printf( "\n------------ DUMP RELACE ENTRY ----------\n" );
+        printf( "\n------------ DUMP REPLACE ENTRY ----------\n" );
         printf( "i_match_index:           %d\n", p_rent->i_match_index );
         printf( "i_matched_flag:          %d\n", p_rent->i_matched_flag );
         printf( "i_in_file_match_begain:  %d\n", p_rent->i_in_file_match_begain );
@@ -81,7 +81,7 @@ int dump_replace_ent( replace_ent_t *p_rent )
             printf( "\ns_match_file_path:       %s\n", p_rent->s_match_file_path );
         else
             printf( "\ns_match_file_path:       (empty)\n" );
-        printf( "------------ DUMP RELACE ENTRY ----------\n" );
+        printf( "------------ DUMP REPLACE ENTRY ----------\n" );
     }
 
     return 0;
