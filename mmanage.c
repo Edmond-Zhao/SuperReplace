@@ -92,6 +92,7 @@ int mmg_add_a_line( block_db_t *p_block_db, char *s_line )
     {
         p_node->i_index = p_block_db->p_node_end->i_index + 1;
         p_block_db->p_node_end->p_next = p_node;
+        p_block_db->p_node_end = p_node;
     }
 
     return 0;
