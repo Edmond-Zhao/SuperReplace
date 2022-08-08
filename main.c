@@ -21,11 +21,15 @@ int main( void )
     init_replace_ent( &rent, 1 );
     load_param_from_file( &rent, TEST_FILE_LIST_FILE, LOAD_FILE_LIST );
     printf( "load block from file: %s\n", TEST_FILE_LIST_FILE );
+    //dump_replace_ent( &rent );
+
+    load_param_from_file( &rent, TEST_FIND_LINES_FILE, LOAD_FIND_LINES );
+    printf( "load block from file: %s\n", TEST_FIND_LINES_FILE );
+    //dump_replace_ent( &rent );
+
+    load_param_from_file( &rent, TEST_REPLACE_LINES_FILE, LOAD_REPLACE_LINES );
+    printf( "load block from file: %s\n", TEST_REPLACE_LINES_FILE );
     dump_replace_ent( &rent );
-
-    //rent.p_block_find = load_block_from_file( TEST_FIND_LINES_FILE );
-
-    //rent.p_block_replace = load_block_from_file( TEST_REPLACE_LINES_FILE );
 
  
 /*    
