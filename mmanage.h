@@ -16,17 +16,14 @@ typedef struct line_node_s
 typedef struct block_db_s
 {
     int i_line_node_count;
-    size_t block_size;
+    size_t file_size;
 
     line_node_t *p_node_head;
     line_node_t *p_node_end;
     line_node_t *p_node_curr;
-    char *p_block;
-    char *p_block_end;
-    char *p_w_end;
 } block_db_t;
 
-block_db_t *mmg_get_block_db( const size_t ul_mem_size );
+block_db_t *mmg_get_block_db( void );
 int mmg_add_a_line( block_db_t *p_block_db, char *s_line );
 char *mmg_get_first_line( block_db_t *p_block_db );
 char *mmg_get_next_line( block_db_t *p_block_db );
